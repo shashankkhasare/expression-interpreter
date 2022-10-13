@@ -49,14 +49,14 @@ public class Scanner {
         if (match('=')) {
           addToken(TokenType.BANG_EQUAL);
         } else {
-          App.error(UNKNOWN_CHAR);
+          App.error(null, UNKNOWN_CHAR);
         }
         break;
       case '=':
         if (match('=')) {
           addToken(TokenType.EQUAL_EQUAL);
         } else {
-          App.error(UNKNOWN_CHAR);
+          App.error(null, UNKNOWN_CHAR);
         }
         break;
       case '<':
@@ -74,7 +74,7 @@ public class Scanner {
         if (isDigit(c)) {
           number();
         } else {
-          App.error(UNKNOWN_CHAR);
+          App.error(null, UNKNOWN_CHAR);
         }
         break;
     }

@@ -4,10 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import com.expression.interpreters.core.Expr;
+import com.expression.interpreters.core.Parser;
 import com.expression.interpreters.core.Scanner;
 import com.expression.interpreters.core.Token;
+import com.expression.interpreters.enums.TokenType;
 
 public class App {
+
+  private static boolean hadError = false;
+
   public static void main(String[] args) throws IOException {
     /* Initialize reader. */
     InputStreamReader input = new InputStreamReader(System.in);
@@ -28,13 +34,24 @@ public class App {
     Scanner scanner = new Scanner(source);
     List<Token> tokens = scanner.scanTokens();
 
-    /* Just print the tokens. */
-    for (Token token : tokens) {
-      System.out.println(token);
+    Parser parser = new Parser(tokens);
+    Expr expression = parser.parse();
+
+    /* Stop if there was a syntax error. */
+    if (hadError) {
+      return;
     }
+
+    /* Do the interpretation here. */
   }
 
-  public static void error(String message) {
-    System.err.println("[Error] " + ": " + message);
+  public static void error(Token token, String message) {
+    if (token.type == TokenType.EOF) {
+      System.err.println("[Error] " + ": " + message);
+    } else {
+      System.err.println("[Error] " + ": " + token.lexeme + "': " + message);
+    }
+    hadError = true;
   }
+
 }
