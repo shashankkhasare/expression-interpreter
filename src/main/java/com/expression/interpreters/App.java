@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import com.expression.interpreters.core.Expr;
+import com.expression.interpreters.core.Interpreter;
 import com.expression.interpreters.core.Parser;
+import com.expression.interpreters.core.RuntimeError;
 import com.expression.interpreters.core.Scanner;
 import com.expression.interpreters.core.Token;
 import com.expression.interpreters.enums.TokenType;
@@ -13,6 +15,9 @@ import com.expression.interpreters.enums.TokenType;
 public class App {
 
   private static boolean hadError = false;
+  static boolean hadRuntimeError = false;
+
+  private static final Interpreter interpreter = new Interpreter();
 
   public static void main(String[] args) throws IOException {
     /* Initialize reader. */
@@ -43,6 +48,8 @@ public class App {
     }
 
     /* Do the interpretation here. */
+    interpreter.interpret(expression);
+
   }
 
   public static void error(Token token, String message) {
@@ -54,4 +61,8 @@ public class App {
     hadError = true;
   }
 
+  public static void runtimeError(RuntimeError error) {
+    System.err.println(error.getMessage());
+    hadRuntimeError = true;
+  }
 }
