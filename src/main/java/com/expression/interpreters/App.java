@@ -7,7 +7,6 @@ import java.util.List;
 import com.expression.interpreters.core.Expr;
 import com.expression.interpreters.core.Interpreter;
 import com.expression.interpreters.core.Parser;
-import com.expression.interpreters.core.RuntimeError;
 import com.expression.interpreters.core.Scanner;
 import com.expression.interpreters.core.Token;
 import com.expression.interpreters.enums.TokenType;
@@ -61,7 +60,4 @@ public class App {
     hadError = true;
   }
 
-  public static void runtimeError(RuntimeError error) {
-    System.err.println(error.getMessage());
-  }
 }

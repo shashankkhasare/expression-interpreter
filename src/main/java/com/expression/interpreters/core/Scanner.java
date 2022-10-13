@@ -45,6 +45,9 @@ public class Scanner {
       case '*':
         addToken(TokenType.STAR);
         break;
+      case '/':
+        addToken(TokenType.SLASH);
+        break;
       case '!':
         if (match('=')) {
           addToken(TokenType.BANG_EQUAL);

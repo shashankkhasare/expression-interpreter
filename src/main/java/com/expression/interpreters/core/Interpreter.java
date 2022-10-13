@@ -1,6 +1,5 @@
 package com.expression.interpreters.core;
 
-import com.expression.interpreters.App;
 import com.expression.interpreters.core.Expr.Binary;
 import com.expression.interpreters.core.Expr.Grouping;
 import com.expression.interpreters.core.Expr.Literal;
@@ -13,12 +12,8 @@ public class Interpreter implements Expr.Visitor<Object> {
   }
 
   public void interpret(Expr expression) {
-    try {
-      Object value = evaluate(expression);
-      System.out.println(stringify(value));
-    } catch (RuntimeError error) {
-      App.runtimeError(error);
-    }
+    Object value = evaluate(expression);
+    System.out.println(stringify(value));
   }
 
   private String stringify(Object object) {
@@ -44,35 +39,27 @@ public class Interpreter implements Expr.Visitor<Object> {
 
     switch (expr.operator.type) {
       case GREATER:
-        checkNumberOperands(expr.operator, left, right);
         return (double) left > (double) right;
       case GREATER_EQUAL:
-        checkNumberOperands(expr.operator, left, right);
         return (double) left >= (double) right;
       case LESS:
-        checkNumberOperands(expr.operator, left, right);
         return (double) left < (double) right;
       case LESS_EQUAL:
-        checkNumberOperands(expr.operator, left, right);
         return (double) left <= (double) right;
       case MINUS:
-        checkNumberOperands(expr.operator, left, right);
         return (double) left - (double) right;
       case PLUS:
-        checkNumberOperands(expr.operator, left, right);
         return (double) left + (double) right;
       case SLASH:
-        checkNumberOperands(expr.operator, left, right);
         return (double) left / (double) right;
       case STAR:
-        checkNumberOperands(expr.operator, left, right);
         return (double) left * (double) right;
       case BANG_EQUAL:
         return !isEqual(left, right);
       case EQUAL_EQUAL:
         return isEqual(left, right);
       default:
-        throw new RuntimeError(expr.operator, "Un-supported Operand.");
+        return null;
     }
   }
 
@@ -101,23 +88,7 @@ public class Interpreter implements Expr.Visitor<Object> {
   @Override
   public Object visitUnaryExpr(Unary expr) {
     Object right = evaluate(expr.right);
-
-    checkNumberOperand(expr.operator, right);
     return -(double) right;
-  }
-
-  private void checkNumberOperand(Token operator, Object operand) {
-    if (operand instanceof Double) {
-      return;
-    }
-    throw new RuntimeError(operator, "Operand must be a number.");
-  }
-
-  private void checkNumberOperands(Token operator, Object left, Object right) {
-    if (left instanceof Double && right instanceof Double) {
-      return;
-    }
-    throw new RuntimeError(operator, "Operands must be numbers.");
   }
 
 }

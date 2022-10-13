@@ -6,6 +6,7 @@ import com.expression.interpreters.enums.TokenType;
 
 public class Parser {
   private static class ParseError extends RuntimeException {
+    private static final long serialVersionUID = 4182043817884861975L;
   }
 
   private final List<Token> tokens;
