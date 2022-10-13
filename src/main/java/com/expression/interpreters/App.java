@@ -15,7 +15,6 @@ import com.expression.interpreters.enums.TokenType;
 public class App {
 
   private static boolean hadError = false;
-  static boolean hadRuntimeError = false;
 
   private static final Interpreter interpreter = new Interpreter();
 
@@ -32,6 +31,7 @@ public class App {
         break;
       }
       process(line);
+      hadError = false;
     }
   }
 
@@ -53,7 +53,7 @@ public class App {
   }
 
   public static void error(Token token, String message) {
-    if (token.type == TokenType.EOF) {
+    if (token == null || token.type == TokenType.EOF) {
       System.err.println("[Error] " + ": " + message);
     } else {
       System.err.println("[Error] " + ": " + token.lexeme + "': " + message);
@@ -63,6 +63,5 @@ public class App {
 
   public static void runtimeError(RuntimeError error) {
     System.err.println(error.getMessage());
-    hadRuntimeError = true;
   }
 }
